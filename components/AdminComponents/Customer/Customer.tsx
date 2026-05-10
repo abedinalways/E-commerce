@@ -1,0 +1,78 @@
+"use client";
+
+import { useGetCustomersQuery } from "@/src/redux/admin/customers/customersApi";
+import CustomerTable from "./CustomerTable";
+
+export default function Customer() {
+  const { data, isLoading } = useGetCustomersQuery({ page: 1, limit: 10 });
+
+  const totalCustomers = data?.meta?.total || 0;
+
+  // const CustomerStats = [
+  //   {
+  //     id: 1,
+  //     title: "Total Customers",
+  //     icon: <UserGroupIcon />,
+  //     number: isLoading ? "..." : totalCustomers,
+  //     iconBgColor: "#EDF3FB",
+  //     iconColor: "#4A87D7",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Active Customers",
+  //     icon: <ActiveCustomerIcon />,
+  //     number: "4",
+  //     iconBgColor: "#E9FAF7",
+  //     iconColor: "#22CAAD",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "New (30 days)",
+  //     icon: <UserPlus />,
+  //     number: "6",
+  //     iconBgColor: "#FFFAE8",
+  //     iconColor: "#FFCC00",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Total Revenue",
+  //     icon: <DollarIcon />,
+  //     number: "$899.92",
+  //     iconBgColor: "#F4F1FF",
+  //     iconColor: "#B081FF",
+  //   },
+  // ];
+
+  return (
+    <div>
+      <div className="flex flex-wrap justify-between gap-2">
+        <h1 className="text-2xl font-extrabold text-primary-text mb-4">
+          Customer Management
+        </h1>
+        {/* <div className="flex flex-wrap items-center gap-4">
+          <button className="flex items-center justify-center px-3 py-2.5 bg-[#1F274B] rounded-[4px] text-[#FFF] space-x-2 cursor-pointer">
+            <LetterIcon className="h-4 w-4" />
+            <span>Send Campaign</span>
+          </button>
+          <button className="flex items-center justify-center px-3 py-2.5 bg-[#1F274B] rounded-[4px] text-[#FFF] space-x-2 cursor-pointer">
+            <PlusIcon className="h-4 w-4" />
+            <span>Add Customer</span>
+          </button>
+        </div> */}
+      </div>
+      {/* <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3 my-5">
+        {CustomerStats.map((status) => (
+          <HeaderCard
+            key={status?.id}
+            title={status?.title}
+            icon={status.icon}
+            number={status.number}
+            iconBgColor={status?.iconBgColor}
+            iconColor={status.iconColor}
+          />
+        ))}
+      </div> */}
+      <CustomerTable />
+    </div>
+  );
+}

@@ -1,0 +1,213 @@
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { MdClose } from "react-icons/md";
+import AlertIcon from "../Icons/AdminIcon/AlertIcon";
+import CardIcon from "../Icons/AdminIcon/CardIcon";
+import CartIcon from "../Icons/AdminIcon/CartIcon";
+import CMSIcon from "../Icons/AdminIcon/CMSIcon";
+import CouponIcon from "../Icons/AdminIcon/CouponIcon";
+import DashboardIcon from "../Icons/AdminIcon/DashboardIcon";
+import JobIcon from "../Icons/AdminIcon/JobIcon";
+import LogoutIcon from "../Icons/AdminIcon/LogoutIcon";
+import ProductIcon from "../Icons/AdminIcon/ProductIcon";
+import SettingIcon from "../Icons/AdminIcon/SettingIcon";
+import UsersIcon from "../Icons/AdminIcon/UsersIcon";
+import SaddlesIcon from "../Icons/SaddlesIcon";
+import UserIcon from "../Icons/UserIcon";
+
+const menuItems = [
+  { label: "Dashboard", href: "/admin", icon: DashboardIcon },
+  // {
+  //   label: "Analytics",
+  //   href: "/admin/analytics",
+  //   icon: AnalyticsIcon,
+  // },
+  {
+    label: "Tack Products",
+    href: "/admin/products",
+    icon: ProductIcon,
+  },
+  {
+    label: "Used Saddles",
+    href: "/admin/use-saddles",
+    icon: SaddlesIcon,
+  },
+  {
+    label: "Saddle Product",
+    href: "/admin/saddle-product",
+    icon: SaddlesIcon,
+  },
+  {
+    label: "Leadline Saddle",
+    href: "/admin/leadline-saddle",
+    icon: SaddlesIcon,
+  },
+  {
+    label: "Orders",
+    href: "/admin/orders",
+    icon: CartIcon,
+  },
+  {
+    label: "Customers",
+    href: "/admin/customers",
+    icon: UsersIcon,
+  },
+  {
+    label: "CMS",
+    href: "/admin/cms",
+    icon: CMSIcon,
+  },
+  {
+    label: "Coupons",
+    href: "/admin/coupons",
+    icon: CouponIcon,
+  },
+  {
+    label: "Payments",
+    href: "/admin/payments",
+    icon: CardIcon,
+  },
+  {
+    label: "Saddle Alerts",
+    href: "/admin/saddle-alerts",
+    icon: AlertIcon,
+  },
+  {
+    label: "Try Saddle",
+    href: "/admin/saddle-expert",
+    icon: UsersIcon,
+  },
+  {
+    label: "Job Applicants",
+    href: "/admin/job-applicants",
+    icon: JobIcon,
+  },
+  {
+    label: "Contact Us",
+    href: "/admin/contact-us",
+    icon: UserIcon,
+  },
+  {
+    label: "Settings",
+    href: "/admin/settings",
+    icon: SettingIcon,
+  },
+];
+
+const bottomMenu = [
+  {
+    label: "Logout",
+    href: "/signin",
+    icon: LogoutIcon,
+  },
+];
+
+interface AdminSidebarProps {
+  sidebarOpen: boolean;
+  toggleSidebar: () => void;
+}
+
+export default function AdminSidebar({
+  sidebarOpen,
+  toggleSidebar,
+}: AdminSidebarProps) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    document.cookie =
+      "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=strict;";
+    document.cookie =
+      "userType=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=strict;";
+
+    router.replace("/signin");
+  };
+
+  return (
+    <>
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-20 bg-black/40 lg:hidden"
+          onClick={toggleSidebar}
+        ></div>
+      )}
+
+      <div
+        className={`fixed bg-white md:py-8 py-6 px-4 z-50 h-screen overflow-y-auto w-[250px] transform border-r border-[#EAECF0] transition-transform duration-300 ease-in-out flex flex-col justify-between ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
+      >
+        <div>
+          {/* Logo */}
+          <div className="flex justify-between items-center">
+            <Link href="/admin/dashboard">
+              <Image
+                src="/logo.svg"
+                alt="Logo"
+                width={112}
+                height={40}
+                unoptimized
+              />
+            </Link>
+            <MdClose
+              size={26}
+              className="text-[#EB3D4D] lg:hidden block"
+              onClick={toggleSidebar}
+            />
+          </div>
+
+          {/* Menu Items */}
+          <nav className="mt-6">
+            {menuItems.map((item, index) => {
+              const isActive = (() => {
+                if (item.href === "/") {
+                  return pathname === "/";
+                }
+                return pathname === item.href;
+              })();
+              return (
+                <div className="mb-2" key={index}>
+                  <Link
+                    href={item.href}
+                    className={`flex items-center md:text-base text-sm py-3 pl-3 pr-2 duration-300 rounded-[4px] gap-3 text-secondary-text ${
+                      isActive
+                        ? "bg-primary-bg text-white"
+                        : "bg-transparent hover:bg-primary-bg cursor-pointer hover:text-white"
+                    }`}
+                  >
+                    <item.icon />
+                    <span>{item.label}</span>
+                  </Link>
+                </div>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Bottom menu */}
+        <div className="">
+          {bottomMenu.map((item, index) => {
+            const isActive = pathname === item.href;
+            return (
+              <div className="mb-2" key={index}>
+                <button
+                  onClick={handleLogout}
+                  className={`flex items-center md:text-base text-sm py-3 pl-3 pr-2 duration-300 rounded-[4px] gap-3 text-error-text w-full ${
+                    isActive
+                      ? "bg-error-text text-white"
+                      : "bg-transparent hover:bg-error-text cursor-pointer hover:text-white"
+                  }`}
+                >
+                  <item.icon />
+                  {item.label}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+}

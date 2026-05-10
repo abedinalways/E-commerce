@@ -1,0 +1,80 @@
+"use client";
+
+import ArionAmbassadorTab from "@/components/AdminComponents/Cms/ArionAmbassador";
+import ArionTeamTab from "@/components/AdminComponents/Cms/ArionTeamTab";
+import BlogPostTable from "@/components/AdminComponents/Cms/BlogPostTable";
+import CmsTabs from "@/components/AdminComponents/Cms/CmsTabs";
+import CompetitionCalendarTab from "@/components/AdminComponents/Cms/CompetitionCalendar";
+import ContactTab from "@/components/AdminComponents/Cms/ContactTab";
+import ExpertsList from "@/components/AdminComponents/Cms/ExpertsList";
+import { TabContent } from "@/components/AdminComponents/Settings/SettingsTab";
+import BlogIcon from "@/components/Icons/AdminIcon/BlogIcon";
+import ContactIcon from "@/components/Icons/AdminIcon/ContactIcon";
+import UsersIcon from "@/components/Icons/AdminIcon/UsersIcon";
+import CalenderIcon from "@/components/Icons/CalenderIcon";
+import UserIcon from "@/components/Icons/UserIcon";
+import { useState } from "react";
+
+export default function CmsPage() {
+  const [activeTab, setActiveTab] = useState("blog");
+  const tabs = [
+    {
+      value: "blog",
+      label: "Blog Posts",
+      icon: <BlogIcon />,
+    },
+    {
+      value: "arion-team",
+      label: "Arion Team",
+      icon: <UsersIcon />,
+    },
+    {
+      value: "arion-ambassador",
+      label: "Arion Ambassador",
+      icon: <UserIcon />,
+    },
+    {
+      value: "competition-calendar",
+      label: "Competition Calendar",
+      icon: <CalenderIcon />,
+    },
+    {
+      value: "experts-list",
+      label: "Experts List",
+      icon: <UsersIcon />,
+    },
+    {
+      value: "contact",
+      label: "Contact Info",
+      icon: <ContactIcon />,
+    },
+  ];
+
+  return (
+    <div>
+      <div className="w-full mb-2 lg:w-fit">
+        <CmsTabs tabs={tabs} defaultValue="blog" onTabChange={setActiveTab} />
+      </div>
+      <div className="w-full">
+        <TabContent value="blog" activeTab={activeTab}>
+          <BlogPostTable />
+        </TabContent>
+        <TabContent value="arion-team" activeTab={activeTab}>
+          <ArionTeamTab />
+        </TabContent>
+        <TabContent value="arion-ambassador" activeTab={activeTab}>
+          <ArionAmbassadorTab />
+        </TabContent>
+        <TabContent value="competition-calendar" activeTab={activeTab}>
+          <CompetitionCalendarTab />
+        </TabContent>
+        <TabContent value="experts-list" activeTab={activeTab}>
+          <ExpertsList />
+        </TabContent>
+        <TabContent value="contact" activeTab={activeTab}>
+          <ContactTab />
+        </TabContent>
+      </div>
+    </div>
+  );
+}
